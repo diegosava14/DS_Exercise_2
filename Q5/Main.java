@@ -1,9 +1,9 @@
-package Q4;
+package Q5;
 
 public class Main {
 
-    static int arraySize = 60;
-    static int NumThreads = 15; 
+    static int arraySize = 10000;
+    static int NumThreads = 24; 
     static int toSearch = 17;
 
     public static void main(String[] args) {
@@ -13,9 +13,7 @@ public class Main {
         for (int i = 0; i < arraySize; i++) {
             Array[i] = i;
         }
-
         Search search = new Search();
         search.ParallelSearch(toSearch, Array, NumThreads);
-    
     }
 }

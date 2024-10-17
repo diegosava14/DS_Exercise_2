@@ -1,4 +1,4 @@
-package Q4;
+package Q5;
 
 import java.util.ArrayList;
 
@@ -10,21 +10,32 @@ public class Search {
     static class Searcher implements Runnable {
         
         private int[] Array;
+        private int start;
+        private int end;
         private int toSearch;
         private int threadNum;
 
 
-        public Searcher(int toSearch, int[] Array, int threadNum) {
+        public Searcher(int toSearch, int[] Array, int start, int end, int threadNum) {
             this.Array = Array;
+            this.start = start;
+            this.end = end;
             this.toSearch = toSearch;
             this.threadNum = threadNum;
         }
 
         @Override 
         public void run() {
-
             boolean found = false;
-            for (int i = 0; i < Array.length; i++) {
+
+            try {
+                // Sleep for 2 seconds
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                System.out.println(Thread.currentThread().getName() + " was interrupted.");
+            }
+
+            for (int i = start; i < end; i++) {
                 if (Array[i] == toSearch) {
                     System.out.println("Thread " + threadNum + " has found the value");
                     found = true;
@@ -34,39 +45,33 @@ public class Search {
 
             if (found) {
                 System.out.print("[");
-                for (int i = 0; i <  Array.length - 1; i++) {
+                for (int i = start; i < end - 1; i++) {
                     System.out.print(Array[i] + ", ");
                 }
-                System.out.println(Array[Array.length - 1] + "]");
+                System.out.println(Array[end - 1] + "]");
             }
 
         }
     }
 
     public void ParallelSearch(int toSearch, int[] Array, int numThreads){
-        ArrayList<int[]> chunks = new ArrayList<int[]>();
+        ArrayList<Integer[]> range = new ArrayList<Integer[]>();
         int chunkSize = Array.length / numThreads;
         Thread[] threads = new Thread[numThreads];
-        
+
         for (int i = 0; i < numThreads; i++) {
-            int[] aux = new int[chunkSize];
             int start = i * chunkSize;
             int end = (i + 1) * chunkSize;
             if (i == numThreads - 1) {
                 end = Array.length;
             }
-            int k = 0;
-            for (int j = start; j < end; j++) {
-                aux[k] = Array[j];
-                k++;
-            }
-            chunks.add(aux);
+            range.add(new Integer[]{start, end});
         }
 
-        long startTime = System.nanoTime()/1000000;
+       long startTime = System.nanoTime()/1000000;
        
         for (int i = 0; i < numThreads; i++) {
-            threads[i] = new Thread(new Searcher(toSearch, chunks.get(i), i));
+            threads[i] = new Thread(new Searcher(toSearch, Array, range.get(i)[0], range.get(i)[1], i));
             threads[i].start();
         }
 
