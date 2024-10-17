@@ -38,6 +38,8 @@ public class Search {
                     System.out.print(Array[i] + ", ");
                 }
                 System.out.println(Array[Array.length - 1] + "]");
+            } else {
+                System.out.println("The number was not found");
             }
 
         }

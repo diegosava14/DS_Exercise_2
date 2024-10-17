@@ -3,10 +3,10 @@ package Q3;
 import java.util.LinkedList;
 
 public class Main {
-    
+    static int arraySize = 1000;
     public static void main(String[] args) {
         LinkedList<Integer> list = new LinkedList<>();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < arraySize; i++) {
             list.add(i);
         }
 
